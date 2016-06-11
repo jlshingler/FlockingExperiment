@@ -8,20 +8,35 @@
 #include "Dependencies/freeglut/freeglut.h"
 
 // graphics referenced from pong tutorial http://noobtuts.com/cpp/2d-pong-game
+// other references (such as research/starting points for flocking behavior):
+// Programming Principles and Practice Using C++ by Bjarne Stroustrup
+// Artificial Intelligence for Games Second Edition by Ian Millington & John Funge
+// Programming Game AI by Example by Mat Buckland
+// http://www.kfish.org/boids/pseudocode.html
+// Flocks, herds and schools: A distributed behavioral model by Craig W. Reynolds
+
 
 int window_width = 800;
 int window_height = 600;
 int interval = 1000 / 60;
 
-float tposx = 385.0f;
-float tposy = 295.0f;
-float tsize = 10.0f;
+float posx = 395.0f; // default starting point. will randomized in the future
+float posy = 295.0f;
+float size = 10.0f;
 
-float sposx = 405.0f;
-float sposy = 295.0f;
-float ssize = 10.0f;
+float maxSpeed = 10.0f;
+float maxRotation = 10.0f;
 
-//initialize triangle
+struct boid{ // calling them boids bc why not
+	float x;
+	float y;
+};
+
+std::vector<boid> boids;
+
+bool flipSwitch = true;
+
+// initialize triangle
 void drawTriangle(float x, float y, float width, float height) { 
 	glBegin(GL_TRIANGLES);
 	glVertex2f(x, y);
@@ -30,6 +45,7 @@ void drawTriangle(float x, float y, float width, float height) {
 	glEnd();
 }
 
+// initialize squares
 void drawSquare(float x, float y, float width, float height){
 	glBegin(GL_QUADS);
 	glVertex2f(x, y);
@@ -39,6 +55,7 @@ void drawSquare(float x, float y, float width, float height){
 	glEnd();
 }
 
+// configure opengl for 2d
 void enable2D(int width, int height) {
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
@@ -48,18 +65,38 @@ void enable2D(int width, int height) {
 	glLoadIdentity();
 }
 
+// for now VERY basic movement to test. just move across the screen and back.
+void move(){ 
+	for (int i = 0; i < boids.size(); i++){
+		if (boids[i].x < 650 && !flipSwitch){
+			boids[i].x += 1;
+			boids[i].y += 1;
+		}
+		else if (boids[i].x > 150 && flipSwitch) {
+			boids[i].x -= 1;
+			boids[i].y -= 1;
+		}
+		else{
+			flipSwitch = !flipSwitch;
+		}
+	}
+}
+
 void draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glPushMatrix(); //Save the transformations performed thus far
+	glPushMatrix(); // save the transformations performed thus far
 
-	drawTriangle(tposx, tposy, tsize, tsize);
-	drawSquare(sposx, sposy, ssize, ssize);
-	
+	for (boid b : boids){ // draw each boid
+		drawSquare(b.x, b.y, size, size);
+	}
+
 	glutSwapBuffers();
 }
 
 void update(int value) {
+	move(); // call movement
+
 	glutTimerFunc(interval, update, 0);
 
 	glutPostRedisplay();
@@ -73,7 +110,18 @@ int _tmain(int argc, char** argv)
 	glutInitWindowSize(window_width, window_height);
 	glutCreateWindow("");
 
-	// Register callback functions  
+	// initialize test boids
+	boid testBoid;
+	testBoid.x = posx;
+	testBoid.y = posy;
+	boids.push_back(testBoid);
+
+	boid testBoid2;
+	testBoid2.x = posx;
+	testBoid2.y = posy + 20.0f;
+	boids.push_back(testBoid2);
+
+	// register callback functions  
 	glutDisplayFunc(draw);
 	glutTimerFunc(interval, update, 0);
 
