@@ -1,11 +1,7 @@
-// FlockingExperiment.cpp : Defines the entry point for the console application.
+// FlockingExperiment.cpp
 //
 #include "stdafx.h"
-
-#include <iostream>
-#include <windows.h>
-#include <vector>
-#include "Dependencies/freeglut/freeglut.h"
+#include "FlockingExperiment.h"
 
 // graphics referenced from pong tutorial http://noobtuts.com/cpp/2d-pong-game
 // other references (such as research/starting points for flocking behavior):
@@ -14,27 +10,6 @@
 // Programming Game AI by Example by Mat Buckland
 // http://www.kfish.org/boids/pseudocode.html
 // Flocks, herds and schools: A distributed behavioral model by Craig W. Reynolds
-
-
-int window_width = 800;
-int window_height = 600;
-int interval = 1000 / 60;
-
-float posx = 395.0f; // default starting point. will randomized in the future
-float posy = 295.0f;
-float size = 10.0f;
-
-float maxSpeed = 10.0f;
-float maxRotation = 10.0f;
-
-struct boid{ // calling them boids bc why not
-	float x;
-	float y;
-};
-
-std::vector<boid> boids;
-
-bool flipSwitch = true;
 
 // initialize triangle
 void drawTriangle(float x, float y, float width, float height) { 
@@ -65,21 +40,21 @@ void enable2D(int width, int height) {
 	glLoadIdentity();
 }
 
-// for now VERY basic movement to test. just move across the screen and back.
+void randomMove(int i){
+	float angle = ((float)rand() / (RAND_MAX)) * ((float)(2 * 3.14159));
+	float movex = sin(angle);
+	float movey = cos(angle);
+	boids[i].x += movex * maxSpeed;
+	boids[i].y += movey * maxSpeed;
+}
+
+// control movement
 void move(){ 
+
 	for (int i = 0; i < boids.size(); i++){
-		if (boids[i].x < 650 && !flipSwitch){
-			boids[i].x += 1;
-			boids[i].y += 1;
-		}
-		else if (boids[i].x > 150 && flipSwitch) {
-			boids[i].x -= 1;
-			boids[i].y -= 1;
-		}
-		else{
-			flipSwitch = !flipSwitch;
-		}
+		randomMove(i);
 	}
+
 }
 
 void draw() {
