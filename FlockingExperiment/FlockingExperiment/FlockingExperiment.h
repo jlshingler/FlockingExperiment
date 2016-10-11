@@ -14,10 +14,12 @@ const int interval = 1000 / 60;
 
 float posx = 395.0f; // default starting point. will randomized in the future
 float posy = 295.0f;
-float size = 10.0f;
+float size = 5.0f;
 
-const float maxSpeed = 1.0f;
+const float maxSpeed = 3.0f;
 const float maxRotation = 10.0f;
+const float sep = 5.0f; // separation
+const float neighborhood = 100.0f; // neighborhood
 
 struct boid{ // calling them boids bc why not
 	float x;
@@ -36,6 +38,9 @@ void drawSquare(float x, float y, float width, float height);
 void enable2D(int width, int height);
 
 void randomMove(int i);
+
+// main flocking function 
+void flocking(int i); 
 
 // control movement
 void move();

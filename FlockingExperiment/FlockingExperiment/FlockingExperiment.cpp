@@ -48,11 +48,50 @@ void randomMove(int i){
 	boids[i].y += movey * maxSpeed;
 }
 
+// movement behavior calculations
+void flocking(int i){
+	float movex = 0;
+	float movey = 0;
+	for (int j = 0; j < boids.size(); j++){
+		if (j != i){
+			//get distance
+			float distx = boids[i].x - boids[j].x;
+			float disty = boids[i].y - boids[j].y;
+			float length = sqrt((distx * distx) + (disty * disty));
+			float angle = sin(disty / length);
+			if (length < neighborhood){
+				if (length < sep){ // separation
+					float sepAngle = -angle;
+					movex += sin(sepAngle);
+					movey += cos(sepAngle);
+				}
+			}
+		}
+	}
+	boids[i].x += (movex * maxSpeed) / boids.size();
+	boids[i].y += (movey * maxSpeed) / boids.size();
+}
+
 // control movement
 void move(){ 
 
 	for (int i = 0; i < boids.size(); i++){
 		randomMove(i);
+		flocking(i);
+
+		// wrap position so boids stay on screen
+		if (boids[i].x > window_width){
+			boids[i].x = boids[i].x - window_width;
+		}
+		if (boids[i].x < 0){
+			boids[i].x = window_width + boids[i].x;
+		}
+		if (boids[i].y > window_height){
+			boids[i].y = boids[i].y - window_height;
+		}
+		if (boids[i].y < 0){
+			boids[i].y = window_height + boids[i].y;
+		}
 	}
 
 }
@@ -95,6 +134,18 @@ int _tmain(int argc, char** argv)
 	testBoid2.x = posx;
 	testBoid2.y = posy + 20.0f;
 	boids.push_back(testBoid2);
+
+	boid testBoid3;
+	testBoid3.x = posx + 20.0f;
+	testBoid3.y = posy + 20.0f;
+	boids.push_back(testBoid3);
+
+	for (int i = 0; i < 100; i++){
+		boid test;
+		test.x = posx + (((float)rand() / (RAND_MAX)) * 5);
+		test.y = posy + (((float)rand() / (RAND_MAX)) * 5);
+		boids.push_back(test);
+	}
 
 	// register callback functions  
 	glutDisplayFunc(draw);
