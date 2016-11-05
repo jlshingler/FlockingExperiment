@@ -16,14 +16,15 @@ float posx = 395.0f; // default starting point. will randomized in the future
 float posy = 295.0f;
 float size = 5.0f;
 
-const float maxSpeed = 3.0f;
+const float maxSpeed = 5.0f;
 const float maxRotation = 10.0f;
-const float sep = 5.0f; // separation
-const float neighborhood = 100.0f; // neighborhood
+const float sep = 0.5f; // separation
+const float neighborhood = 1000.0f; // neighborhood
 
 struct boid{ // calling them boids bc why not
 	float x;
 	float y;
+	float heading[2];
 };
 
 std::vector<boid> boids;
