@@ -108,8 +108,8 @@ void flocking(int i){
 		}
 	}
 	
-	boids[i].heading[0] = (movex + avgHeading[0]) / boids.size(); //allignment
-	boids[i].heading[1] = (movey + avgHeading[1]) / boids.size();
+	boids[i].heading[0] = (movex + avgHeading[0] + boids[i].heading[0]) / (boids.size() + 1); //allignment
+	boids[i].heading[1] = (movey + avgHeading[1] + boids[i].heading[1]) / (boids.size() + 1);
 	boids[i].x += boids[i].heading[0] / maxSpeed;
 	boids[i].y += boids[i].heading[1] / maxSpeed;
 }
@@ -122,17 +122,24 @@ void move(){
 		flocking(i);
 
 		// wrap position so boids stay on screen
-		if (boids[i].x > window_width){
-			boids[i].x = boids[i].x - window_width;
-		}
-		if (boids[i].x < 0){
-			boids[i].x = window_width + boids[i].x;
-		}
-		if (boids[i].y > window_height){
-			boids[i].y = boids[i].y - window_height;
-		}
-		if (boids[i].y < 0){
-			boids[i].y = window_height + boids[i].y;
+		//if (boids[i].x > window_width){
+		//	boids[i].x = boids[i].x - window_width;
+		//}
+		//if (boids[i].x < 0){
+		//	boids[i].x = window_width + boids[i].x;
+		//}
+		//if (boids[i].y > window_height){
+		//	boids[i].y = boids[i].y - window_height;
+		//}
+		//if (boids[i].y < 0){
+		//	boids[i].y = window_height + boids[i].y;
+		//}
+
+		if (boids[i].x > window_width || boids[i].x < 0 || boids[i].y > window_height || boids[i].y < 0){
+			boids[i].x = posx + ((float)rand() / ((RAND_MAX)* 15));
+			boids[i].y = posy + (((float)rand() / ((RAND_MAX)) * 15));
+			boids[i].heading[0] = (((float)rand() / (RAND_MAX)));
+			boids[i].heading[1] = (((float)rand() / (RAND_MAX)));
 		}
 
 		/*if (boids[i].x > window_width){ //maybe do push back?
