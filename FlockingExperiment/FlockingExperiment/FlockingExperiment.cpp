@@ -11,6 +11,12 @@
 // http://www.kfish.org/boids/pseudocode.html
 // Flocks, herds and schools: A distributed behavioral model by Craig W. Reynolds
 
+
+void drawText(float x, float y, std::string text) {
+	glRasterPos2f(x, y);
+	glutBitmapString(GLUT_BITMAP_8_BY_13, (const unsigned char*)text.c_str());
+}
+
 // initialize triangle
 void drawTriangle(float x, float y, float width, float height) { 
 	glBegin(GL_TRIANGLES);
@@ -45,6 +51,11 @@ void draw() {
 	glLoadIdentity();
 	glPushMatrix(); // save the transformations performed thus far
 
+	char buffer[65];
+	_itoa_s(boids.size(), buffer, 10);
+	std::string message = std::string("Press 'Enter' to Add Boids (There are ") + std::string(buffer) + std::string(" Boids Currently)");
+	drawText(window_width / 2 - 220, window_height - 15, message);
+
 	for (Boid b : boids){ // draw each boid
 		drawSquare(b.getX(), b.getY(), size, size);
 	}
@@ -52,8 +63,23 @@ void draw() {
 	glutSwapBuffers();
 }
 
+void keyboard() {
+	// left racket
+	if (GetAsyncKeyState(VK_RETURN)){
+		float x = posx + ((float)rand() / ((RAND_MAX) / 15));
+		float y = posy + ((float)rand() / ((RAND_MAX) / 15));
+		float heading[2];
+		heading[0] = (((float)rand() / (RAND_MAX)));
+		heading[1] = (((float)rand() / (RAND_MAX)));
+		Boid boid(x, y, heading);
+		boids.push_back(boid);
+	}
+
+}
+
 void update(int value) {
-	//move(); // call movement
+	keyboard();
+
 	for (Boid &b : boids){ // draw each boid
 		b.move(boids);
 	}
