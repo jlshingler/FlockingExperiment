@@ -28,8 +28,7 @@ void draw() {
 	glutSwapBuffers();
 }
 
-void keyboard() {
-	// left racket
+void processKeystrokes() {
 	if (GetAsyncKeyState(VK_RETURN)){
 		float x = posx + ((float)rand() / ((RAND_MAX) / 15));
 		float y = posy + ((float)rand() / ((RAND_MAX) / 15));
@@ -43,7 +42,7 @@ void keyboard() {
 }
 
 void update(int value) {
-	keyboard();
+	processKeystrokes();
 
 	for (Boid &b : boids){ // draw each boid
 		b.move(boids);

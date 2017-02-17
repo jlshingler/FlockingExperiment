@@ -17,6 +17,7 @@ Display d;
 
 void draw();
 
-void keyboard();
+// detect keystrokes to add boids (or change modes in the future)
+void processKeystrokes();
 
 void update(int value);
