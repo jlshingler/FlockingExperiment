@@ -11,41 +11,6 @@
 // http://www.kfish.org/boids/pseudocode.html
 // Flocks, herds and schools: A distributed behavioral model by Craig W. Reynolds
 
-
-void drawText(float x, float y, std::string text) {
-	glRasterPos2f(x, y);
-	glutBitmapString(GLUT_BITMAP_8_BY_13, (const unsigned char*)text.c_str());
-}
-
-// initialize triangle
-void drawTriangle(float x, float y, float width, float height) { 
-	glBegin(GL_TRIANGLES);
-	glVertex2f(x, y);
-	glVertex2f(x + width, y);
-	glVertex2f(x + (width / 2), y + height);
-	glEnd();
-}
-
-// initialize squares
-void drawSquare(float x, float y, float width, float height){
-	glBegin(GL_QUADS);
-	glVertex2f(x, y);
-	glVertex2f(x + width, y);
-	glVertex2f(x + width, y + height);
-	glVertex2f(x, y + height);
-	glEnd();
-}
-
-// configure opengl for 2d
-void enable2D(int width, int height) {
-	glViewport(0, 0, width, height);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0f, width, 0.0f, height, 0.0f, 1.0f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-}
-
 void draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -54,10 +19,10 @@ void draw() {
 	char buffer[65];
 	_itoa_s(boids.size(), buffer, 10);
 	std::string message = std::string("Press 'Enter' to Add Boids (There are ") + std::string(buffer) + std::string(" Boids Currently)");
-	drawText(window_width / 2 - 220, window_height - 15, message);
+	d.drawText(window_width / 2 - 220, window_height - 15, message);
 
 	for (Boid b : boids){ // draw each boid
-		drawSquare(b.getX(), b.getY(), size, size);
+		d.drawSquare(b.getX(), b.getY(), size, size);
 	}
 
 	glutSwapBuffers();
@@ -114,7 +79,7 @@ int _tmain(int argc, char** argv)
 	glutTimerFunc(interval, update, 0);
 
 	// setup scene to 2d mode and set draw color to white
-	enable2D(window_width, window_height);
+	d.enable2D(window_width, window_height);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
 	// start
