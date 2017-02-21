@@ -4,15 +4,16 @@
 
 #include <iostream>
 #include <windows.h>
-#define VK_RETURN 0x0D
-#include <vector>
 #include <cmath>
 #include "Dependencies/freeglut/freeglut.h"
 
 #include "Boid.h"
 #include "Display.h"
 
-std::vector<Boid> boids;
+#define VK_RETURN 0x0D
+#define BOIDS_MAX_SIZE 2000
+
+Boid boids[BOIDS_MAX_SIZE];
 Display d;
 
 void draw();

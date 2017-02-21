@@ -24,7 +24,13 @@ void Display::drawTriangle(float x, float y, float width, float height) {
 }
 
 // initialize squares
-void Display::drawSquare(float x, float y, float width, float height) {
+void Display::drawSquare(float x, float y, float width, float height, int color) {
+	if (color == 1) {
+		glColor3f(0.5f, 1.0f, 1.0f);
+	}
+	else {
+		glColor3f(1.0f, 1.0f, 0.5f);
+	}
 	glBegin(GL_QUADS);
 	glVertex2f(x, y);
 	glVertex2f(x + width, y);

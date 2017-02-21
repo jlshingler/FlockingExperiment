@@ -17,12 +17,12 @@ void draw() {
 	glPushMatrix(); // save the transformations performed thus far
 
 	char buffer[65];
-	_itoa_s(boids.size(), buffer, 10);
+	_itoa_s(lastBoid, buffer, 10);
 	std::string message = std::string("Press 'Enter' to Add Boids (There are ") + std::string(buffer) + std::string(" Boids Currently)");
 	d.drawText(window_width / 2 - 220, window_height - 15, message);
 
-	for (Boid b : boids){ // draw each boid
-		d.drawSquare(b.getX(), b.getY(), size, size);
+	for (int i = 0; i < lastBoid; i++){ // draw each boid
+		d.drawSquare(boids[i].getX(), boids[i].getY(), size, size, boids[i].getColor());
 	}
 
 	glutSwapBuffers();
@@ -30,13 +30,16 @@ void draw() {
 
 void processKeystrokes() {
 	if (GetAsyncKeyState(VK_RETURN)){
-		float x = posx + ((float)rand() / ((RAND_MAX) / 15));
-		float y = posy + ((float)rand() / ((RAND_MAX) / 15));
-		float heading[2];
-		heading[0] = (((float)rand() / (RAND_MAX)));
-		heading[1] = (((float)rand() / (RAND_MAX)));
-		Boid boid(x, y, heading);
-		boids.push_back(boid);
+		if (lastBoid < BOIDS_MAX_SIZE) {
+			float x = posx + ((float)rand() / ((RAND_MAX) / 15));
+			float y = posy + ((float)rand() / ((RAND_MAX) / 15));
+			float heading[2];
+			heading[0] = (((float)rand() / (RAND_MAX)));
+			heading[1] = (((float)rand() / (RAND_MAX)));
+			Boid boid(x, y, heading, 0);
+			boids[lastBoid] = boid;
+			lastBoid++; //increment
+		}
 	}
 
 }
@@ -44,10 +47,9 @@ void processKeystrokes() {
 void update(int value) {
 	processKeystrokes();
 
-	for (Boid &b : boids){ // draw each boid
-		b.move(boids);
+	for (int i = 0; i < lastBoid; i++){ // draw each boid
+		boids[i].move(boids);
 	}
-//	std::cout << boids[0].getX() << std::endl;
 
 	glutTimerFunc(interval, update, 0);
 
@@ -63,14 +65,14 @@ int _tmain(int argc, char** argv)
 	glutCreateWindow("");
 
 	// initialize test boids
-	for (int i = 0; i < 100; i++){
+	for (int i = 0; i < lastBoid; i++){
 		float x = posx + ((float)rand() / ((RAND_MAX) / 15));
 		float y = posy + ((float)rand() / ((RAND_MAX) / 15));
 		float heading[2];
 		heading[0] = (((float)rand() / (RAND_MAX)));
 		heading[1] = (((float)rand() / (RAND_MAX)));
-		Boid boid(x, y, heading);
-		boids.push_back(boid);
+		Boid boid(x, y, heading, 1);
+		boids[i] = boid;
 	}
 
 	// register callback functions  

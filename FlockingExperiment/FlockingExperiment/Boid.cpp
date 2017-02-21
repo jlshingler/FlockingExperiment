@@ -1,18 +1,14 @@
 #include "stdafx.h"
 #include "Boid.h"
 
+Boid::Boid(){}
 
-Boid::Boid(float locx, float locy, float set_heading[2])
-{
-	x = locx;
-	y = locy;
+Boid::Boid(float locx, float locy, float set_heading[2], int color):x(locx), y(locy),color(color) {
 	heading[0] = set_heading[0];
 	heading[1] = set_heading[1];
 }
 
-
-Boid::~Boid()
-{
+Boid::~Boid(){
 }
 
 void Boid::randomMove(){
@@ -24,7 +20,7 @@ void Boid::randomMove(){
 }
 
 // movement behavior calculations
-void Boid::flocking(std::vector<Boid> &boids){
+void Boid::flocking(Boid* boids){
 	float movex = 0; // how far boid will move in x direction
 	float movey = 0; // how far boid will move in y direction
 	float cenx = 0; // center x of group
@@ -32,7 +28,7 @@ void Boid::flocking(std::vector<Boid> &boids){
 	int neighborCount = 0; // neighbors (for getting avg)
 	float avgHeading[2] = { 0, 0 };
 
-	for (int j = 0; j < boids.size(); j++){
+	for (int j = 0; j < lastBoid; j++){
 		//get distance
 		float distx = x - boids[j].getX();
 		float disty = y - boids[j].getY();
@@ -84,14 +80,14 @@ void Boid::flocking(std::vector<Boid> &boids){
 		}
 	}
 	
-	heading[0] = (movex + avgHeading[0] + heading[0]) / (boids.size() + 1); //allignment
-	heading[1] = (movey + avgHeading[1] + heading[1]) / (boids.size() + 1);
+	heading[0] = (movex + avgHeading[0] + heading[0]) / (lastBoid + 1); //allignment
+	heading[1] = (movey + avgHeading[1] + heading[1]) / (lastBoid + 1);
 	setX(x + heading[0] / maxSpeed);
 	setY(y + heading[1] / maxSpeed);
 }
 
 // control movement
-void Boid::move(std::vector<Boid> &boids){
+void Boid::move(Boid* boids){
 
 	randomMove();
 	flocking(boids);
@@ -155,4 +151,8 @@ void Boid::setY(float newY){
 
 float Boid::getHeading(){
 	return 0;
+}
+
+int Boid::getColor() {
+	return color;
 }

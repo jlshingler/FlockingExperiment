@@ -12,3 +12,5 @@ const float maxSpeed = 5.0f;
 const float maxRotation = 10.0f;
 const float sep = 0.5f; // separation
 const float neighborhood = 1000.0f; // neighborhood
+
+static int lastBoid = 100; //initial size of boids array
