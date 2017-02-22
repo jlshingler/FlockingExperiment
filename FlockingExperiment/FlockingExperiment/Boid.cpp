@@ -1,16 +1,18 @@
 #include "stdafx.h"
 #include "Boid.h"
 
+// blank constructor to allow for array creation
 Boid::Boid(){}
 
-Boid::Boid(float locx, float locy, float set_heading[2], int color):x(locx), y(locy),color(color) {
+// constructor to initialize values
+Boid::Boid(float locx, float locy, float set_heading[2], colorObject color):x(locx), y(locy),color(color) {
 	heading[0] = set_heading[0];
 	heading[1] = set_heading[1];
 }
 
-Boid::~Boid(){
-}
+Boid::~Boid(){}
 
+// keeps movement going
 void Boid::randomMove(){
 	float angle = ((float)rand() / (RAND_MAX)) * ((float)(2 * 3.14159));
 	float movex = sin(angle);
@@ -87,51 +89,21 @@ void Boid::flocking(Boid* boids){
 }
 
 // control movement
-void Boid::move(Boid* boids){
-
+void Boid::move(Boid* boids) {
 	randomMove();
 	flocking(boids);
 
-	//// wrap position so boids stay on screen
-	//if (getX() > window_width){
-	//	setX(this->x - window_width);
-	//}
-	//if (getX() < 0){
-	//	boids[i].x = window_width + boids[i].x;
-	//}
-	//if (getY() > window_height){
-	//	boids[i].y = boids[i].y - window_height;
-	//}
-	//if (getY() < 0){
-	//	boids[i].y = window_height + boids[i].y;
-	//}
-
-	if (getX() > window_width || getX() < 0 || getY() > window_height || getY() < 0){
+	// if boids leave screen, respawn in middle of screen
+	if (getX() > window_width || getX() < 0 || getY() > window_height || getY() < 0) {
 		this->x = posx + ((float)rand() / ((RAND_MAX)) * 15);
 		this->y = posy + ((float)rand() / ((RAND_MAX)) * 15);
 		this->heading[0] = (((float)rand() / (RAND_MAX)));
 		this->heading[1] = (((float)rand() / (RAND_MAX)));
 	}
 
-	//old code cleanup later
-	/*if (boids[i].x > window_width){ //maybe do push back?
-	boids[i].x = window_width;
-	boids[i].heading[0] = boids[i].heading[0] * -1;
-	}
-	if (boids[i].x < 0){
-	boids[i].x = 0;
-	boids[i].heading[0] = boids[i].heading[0] * -1;
-	}
-	if (boids[i].y > window_height){
-	boids[i].y = window_height;
-	boids[i].heading[1] = boids[i].heading[1] * -1;
-	}
-	if (boids[i].y < 0){
-	boids[i].y = 0;
-	boids[i].heading[1] = boids[i].heading[1] * -1;
-	}*/
-
 }
+
+// start getters and setters
 
 float& Boid::getX(){
 	return x;
@@ -153,6 +125,8 @@ float Boid::getHeading(){
 	return 0;
 }
 
-int Boid::getColor() {
+colorObject Boid::getColor() {
 	return color;
 }
+
+// end getters and setters

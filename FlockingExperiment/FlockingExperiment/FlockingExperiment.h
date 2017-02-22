@@ -17,8 +17,5 @@ Boid boids[BOIDS_MAX_SIZE];
 Display d;
 
 void draw();
-
-// detect keystrokes to add boids (or change modes in the future)
 void processKeystrokes();
-
 void update(int value);

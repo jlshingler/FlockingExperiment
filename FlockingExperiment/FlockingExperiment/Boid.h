@@ -11,23 +11,23 @@ class Boid
 {
 public:
 	Boid();
-	Boid(float locx, float locy, float heading[2], int color);
+	Boid(float locx, float locy, float heading[2], colorObject color);
 	~Boid();
 
-	void move(Boid* boids);
 	void randomMove();
 	void flocking(Boid* boids);
+	void move(Boid* boids);
 	float& getX();
 	void setX(float newX);
 	float& getY();
 	void setY(float newY);
 	float getHeading();
-	int getColor();
+	colorObject getColor();
 
 private:
 	float x;
 	float y;
 	float heading[2];
-	int color;
+	colorObject color;
 };
 

@@ -11,6 +11,7 @@
 // http://www.kfish.org/boids/pseudocode.html
 // Flocks, herds and schools: A distributed behavioral model by Craig W. Reynolds
 
+// handle drawing
 void draw() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
@@ -19,7 +20,7 @@ void draw() {
 	char buffer[65];
 	_itoa_s(lastBoid, buffer, 10);
 	std::string message = std::string("Press 'Enter' to Add Boids (There are ") + std::string(buffer) + std::string(" Boids Currently)");
-	d.drawText(window_width / 2 - 220, window_height - 15, message);
+	d.drawText(window_width / 2 - 220, window_height - 15, message, textColor);
 
 	for (int i = 0; i < lastBoid; i++){ // draw each boid
 		d.drawSquare(boids[i].getX(), boids[i].getY(), size, size, boids[i].getColor());
@@ -28,6 +29,7 @@ void draw() {
 	glutSwapBuffers();
 }
 
+// detect keystrokes to add boids (or change modes in the future)
 void processKeystrokes() {
 	if (GetAsyncKeyState(VK_RETURN)){
 		if (lastBoid < BOIDS_MAX_SIZE) {
@@ -36,7 +38,7 @@ void processKeystrokes() {
 			float heading[2];
 			heading[0] = (((float)rand() / (RAND_MAX)));
 			heading[1] = (((float)rand() / (RAND_MAX)));
-			Boid boid(x, y, heading, 0);
+			Boid boid(x, y, heading, newBoidsColor);
 			boids[lastBoid] = boid;
 			lastBoid++; //increment
 		}
@@ -44,10 +46,11 @@ void processKeystrokes() {
 
 }
 
+// actions on each frame
 void update(int value) {
 	processKeystrokes();
 
-	for (int i = 0; i < lastBoid; i++){ // draw each boid
+	for (int i = 0; i < lastBoid; i++){ // move each boid based on behavior (see Boid.cpp)
 		boids[i].move(boids);
 	}
 
@@ -71,7 +74,7 @@ int _tmain(int argc, char** argv)
 		float heading[2];
 		heading[0] = (((float)rand() / (RAND_MAX)));
 		heading[1] = (((float)rand() / (RAND_MAX)));
-		Boid boid(x, y, heading, 1);
+		Boid boid(x, y, heading, startBoidsColor);
 		boids[i] = boid;
 	}
 
@@ -79,7 +82,7 @@ int _tmain(int argc, char** argv)
 	glutDisplayFunc(draw);
 	glutTimerFunc(interval, update, 0);
 
-	// setup scene to 2d mode and set draw color to white
+	// setup scene to 2d mode and set default draw color to white
 	d.enable2D(window_width, window_height);
 	glColor3f(1.0f, 1.0f, 1.0f);
 
