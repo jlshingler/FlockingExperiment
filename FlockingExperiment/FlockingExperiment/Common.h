@@ -15,7 +15,7 @@ const float neighborhood = 1000.0f; // neighborhood
 
 static int lastBoid = 100; //initial size of boids array
 
-static struct colorObject { 
+struct colorObject { 
 	float r;
 	float g;
 	float b;
