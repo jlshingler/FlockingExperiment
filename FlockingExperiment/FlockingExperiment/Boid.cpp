@@ -1,3 +1,5 @@
+// Boid.cpp
+
 #include "stdafx.h"
 #include "Boid.h"
 
@@ -61,8 +63,8 @@ void Boid::flocking(Boid* boids){
 		}
 	}
 	if (neighborCount > 0){
-		float weight = 100.0f; //cohesion
-		cenx /= neighborCount; //avg center position
+		float weight = 100.0f; // cohesion
+		cenx /= neighborCount; // avg center position
 		ceny /= neighborCount;
 		float distx = x - cenx;
 		float disty = y - ceny;
@@ -82,7 +84,7 @@ void Boid::flocking(Boid* boids){
 		}
 	}
 	
-	heading[0] = (movex + avgHeading[0] + heading[0]) / (lastBoid + 1); //allignment
+	heading[0] = (movex + avgHeading[0] + heading[0]) / (lastBoid + 1); // allignment
 	heading[1] = (movey + avgHeading[1] + heading[1]) / (lastBoid + 1);
 	setX(x + heading[0] / maxSpeed);
 	setY(y + heading[1] / maxSpeed);

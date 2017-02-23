@@ -1,5 +1,5 @@
 // FlockingExperiment.cpp
-//
+
 #include "stdafx.h"
 #include "FlockingExperiment.h"
 
@@ -40,7 +40,7 @@ void processKeystrokes() {
 			heading[1] = (((float)rand() / (RAND_MAX)));
 			Boid boid(x, y, heading, newBoidsColor);
 			boids[lastBoid] = boid;
-			lastBoid++; //increment
+			lastBoid++; // increment
 		}
 	}
 

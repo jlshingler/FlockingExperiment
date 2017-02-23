@@ -1,7 +1,10 @@
+// Display.h - The main display functions for drawing on the screen
+
 #pragma once
 #include "stdafx.h"
 #include "Dependencies/freeglut/freeglut.h"
 #include <string>
+
 #include "Boid.h"
 
 class Display

@@ -1,3 +1,5 @@
+// Common.h - Common constant & static variables and structs used across multiple files
+
 #pragma once
 
 const int window_width = 800;
@@ -13,7 +15,7 @@ const float maxRotation = 10.0f;
 const float sep = 0.5f; // separation
 const float neighborhood = 1000.0f; // neighborhood
 
-static int lastBoid = 100; //initial size of boids array
+static int lastBoid = 100; // initial size of boids array
 
 struct colorObject { 
 	float r;
@@ -21,6 +23,6 @@ struct colorObject {
 	float b;
 };
 
-const colorObject startBoidsColor = { 0.5f, 1.0f, 1.0f}; //color defaults to denote different objects
+const colorObject startBoidsColor = { 0.5f, 1.0f, 1.0f }; // color defaults to denote different objects
 const colorObject newBoidsColor = { 1.0f, 1.0f, 0.5f };
 const colorObject textColor = { 1.0f, 1.0f, 1.0f };

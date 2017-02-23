@@ -1,6 +1,7 @@
+// Boid.h - The boid objects: their necessary variables, behaviors, etc.
+
 #pragma once
 #include "stdafx.h"
-
 #include <iostream>
 #include <windows.h>
 #include <cmath>

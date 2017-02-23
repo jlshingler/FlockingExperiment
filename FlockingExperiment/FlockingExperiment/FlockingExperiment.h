@@ -1,7 +1,6 @@
-// FlockingExperiment.h
+// FlockingExperiment.h - The main execution of the program
 
 #include "stdafx.h"
-
 #include <iostream>
 #include <windows.h>
 #include <cmath>
