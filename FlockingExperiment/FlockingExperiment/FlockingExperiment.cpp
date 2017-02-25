@@ -46,14 +46,21 @@ void processKeystrokes() {
 
 }
 
+void boidLoop(int start, int finish) {
+	for (int i = start; i < finish; i++) { // move each boid based on behavior (see Boid.cpp)
+		boids[i].move(boids);
+	}
+}
+
 // actions on each frame
 void update(int value) {
 	processKeystrokes();
 
-	for (int i = 0; i < lastBoid; i++){ // move each boid based on behavior (see Boid.cpp)
-		boids[i].move(boids);
-	}
-
+	//boidLoop(0, lastBoid);
+	std::thread t3(boidLoop, 0, (lastBoid / 2));
+	std::thread t4(boidLoop, (lastBoid / 2), lastBoid);
+	t3.join();
+	t4.join();
 	glutTimerFunc(interval, update, 0);
 
 	glutPostRedisplay();
@@ -78,6 +85,9 @@ int _tmain(int argc, char** argv)
 		boids[i] = boid;
 	}
 
+	std::thread t1;
+	std::thread t2;
+
 	// register callback functions  
 	glutDisplayFunc(draw);
 	glutTimerFunc(interval, update, 0);
@@ -88,6 +98,9 @@ int _tmain(int argc, char** argv)
 
 	// start
 	glutMainLoop();
+
+	t1.join();
+	t2.join();
 	return 0;
 }
 

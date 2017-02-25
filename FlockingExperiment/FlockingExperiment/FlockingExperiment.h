@@ -4,6 +4,7 @@
 #include <iostream>
 #include <windows.h>
 #include <cmath>
+#include <thread>
 #include "Dependencies/freeglut/freeglut.h"
 
 #include "Boid.h"
