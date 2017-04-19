@@ -92,7 +92,7 @@ void Boid::flocking(Boid* boids){
 
 // control movement
 void Boid::move(Boid* boids) {
-	randomMove();
+	//randomMove();
 	flocking(boids);
 
 	// if boids leave screen, respawn in middle of screen

@@ -5,6 +5,7 @@
 #include <windows.h>
 #include <cmath>
 #include <thread>
+#include <mutex>
 #include "Dependencies/freeglut/freeglut.h"
 
 #include "Boid.h"
@@ -15,6 +16,8 @@
 
 Boid boids[BOIDS_MAX_SIZE];
 Display d;
+
+std::mutex flockLock;
 
 void draw();
 void processKeystrokes();

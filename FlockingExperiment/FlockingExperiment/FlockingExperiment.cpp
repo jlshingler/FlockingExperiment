@@ -46,21 +46,40 @@ void processKeystrokes() {
 
 }
 
-void boidLoop(int start, int finish) {
+void boidLoop(int start, int finish, Boid* test) {
+	//protect entire for-loop
+	//acquire lock (mutex)
+	flockLock.lock();
+	//std::cout << "start: " << start << ", end: " << finish << std::endl;
 	for (int i = start; i < finish; i++) { // move each boid based on behavior (see Boid.cpp)
-		boids[i].move(boids);
+		boids[i].move(test);
 	}
+	flockLock.unlock();
+	//release lock
 }
 
 // actions on each frame
 void update(int value) {
 	processKeystrokes();
 
-	//boidLoop(0, lastBoid);
-	std::thread t3(boidLoop, 0, (lastBoid / 2));
-	std::thread t4(boidLoop, (lastBoid / 2), lastBoid);
+	//protect the array copy so it doesn't get interrupted
+	//acquire lock
+	//flockLock.lock();
+	//Boid test[BOIDS_MAX_SIZE]; //make temp (will be rewritten each update) copy so that each boid will have the same base info for movement calcs
+	//memcpy(test, boids, 5 * sizeof *boids);
+	//flockLock.unlock();
+	//release lock
+
+	//boidLoop(0, lastBoid, boids);
+
+	std::thread t3(boidLoop, 0, (lastBoid / 4), boids);
+	std::thread t4(boidLoop, (lastBoid / 4), (lastBoid / 2), boids);
+	std::thread t5(boidLoop, (lastBoid / 2), (3 * lastBoid / 4), boids);
+	std::thread t6(boidLoop, (3 * lastBoid / 4), lastBoid, boids);
 	t3.join();
 	t4.join();
+	t5.join();
+	t6.join();
 	glutTimerFunc(interval, update, 0);
 
 	glutPostRedisplay();
@@ -85,8 +104,8 @@ int _tmain(int argc, char** argv)
 		boids[i] = boid;
 	}
 
-	std::thread t1;
-	std::thread t2;
+	/*std::thread t1;
+	std::thread t2;*/
 
 	// register callback functions  
 	glutDisplayFunc(draw);
@@ -99,8 +118,8 @@ int _tmain(int argc, char** argv)
 	// start
 	glutMainLoop();
 
-	t1.join();
-	t2.join();
+	/*t1.join();
+	t2.join();*/
 	return 0;
 }
 
